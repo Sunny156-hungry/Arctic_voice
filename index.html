@@ -1,0 +1,1327 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seeing Life Beneath the Surface</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --deep-ocean: #0a1628;
+      --arctic-blue: #1e3a5f;
+      --ice-white: #e8f4f8;
+      --muted-gray: #6b7b8c;
+      --accent-cyan: #4db8c7;
+    }
+    
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--arctic-blue) var(--deep-ocean);
+    }
+    
+    .font-display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    
+    .font-body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    
+    @keyframes oceanWave {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    
+    .animate-ocean {
+      animation: oceanWave 8s ease-in-out infinite;
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-fade-up {
+      animation: fadeInUp 1s ease-out forwards;
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse 3s ease-in-out infinite;
+    }
+    
+    .ocean-gradient {
+      background: linear-gradient(180deg, 
+        #0a1628 0%, 
+        #0d1f3c 20%, 
+        #132845 40%, 
+        #1a3454 60%, 
+        #0f2847 80%, 
+        #081422 100%);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .section-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-hidden {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    
+    .story-section {
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .map-marker {
+      transition: all 0.3s ease;
+    }
+    
+    .map-marker:hover {
+      transform: scale(1.3);
+    }
+    
+    .chart-bar {
+      transition: height 0.5s ease, background 0.3s ease;
+    }
+    
+    .timeline-dot {
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-dot.active {
+      transform: scale(1.5);
+      background: var(--accent-cyan);
+    }
+    
+    .choice-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .choice-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-dot {
+      transition: all 0.3s ease;
+    }
+    
+    .nav-dot.active {
+      width: 24px;
+      border-radius: 4px;
+      background: var(--accent-cyan);
+    }
+    
+    .bubble {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    .light-ray {
+      position: absolute;
+      background: linear-gradient(180deg, rgba(77, 184, 199, 0.1) 0%, transparent 100%);
+      transform-origin: top center;
+    }
+    
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    
+    input[type="range"]::-webkit-slider-track {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--accent-cyan);
+      border-radius: 50%;
+      cursor: pointer;
+      margin-top: -6px;
+    }
+    
+    .tooltip {
+      position: absolute;
+      background: rgba(10, 22, 40, 0.95);
+      border: 1px solid rgba(77, 184, 199, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+    
+    .tooltip.visible {
+      opacity: 1;
+    }
+    
+    .incident-card {
+      border-left: 3px solid var(--accent-cyan);
+    }
+    
+    .whale-profile {
+      transition: all 0.4s ease;
+    }
+    
+    .whale-profile:hover {
+      transform: scale(1.02);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body text-gray-100 overflow-x-hidden">
+  <div id="app" class="h-full overflow-y-auto overflow-x-hidden"><!-- Navigation Dots -->
+   <nav id="nav-dots" class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3" style="display: none;"><button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="0" aria-label="Landing"></button> <button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="1" aria-label="Story"></button> <button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="2" aria-label="Map"></button> <button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="3" aria-label="Dashboard"></button> <button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="4" aria-label="AR Stories"></button> <button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="5" aria-label="Game"></button> <button class="nav-dot w-2 h-2 bg-white/40 rounded-full" data-page="6" aria-label="Reflection"></button>
+   </nav><!-- Page 1: Landing -->
+   <section id="page-landing" class="min-h-full relative ocean-gradient flex items-center justify-center"><!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+     <div class="light-ray w-64 h-96 left-1/4 -top-10 rotate-12 animate-pulse-slow"></div>
+     <div class="light-ray w-48 h-80 right-1/3 -top-10 -rotate-6 animate-pulse-slow" style="animation-delay: 1s;"></div>
+     <div class="bubble w-4 h-4 left-1/5 bottom-1/4" style="animation-delay: 0s;"></div>
+     <div class="bubble w-6 h-6 right-1/4 bottom-1/3" style="animation-delay: 1.5s;"></div>
+     <div class="bubble w-3 h-3 left-1/2 bottom-1/5" style="animation-delay: 2.5s;"></div>
+     <div class="bubble w-5 h-5 right-1/5 bottom-2/5" style="animation-delay: 0.8s;"></div>
+    </div><!-- Beluga Silhouette -->
+    <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 animate-float opacity-20">
+     <svg width="400" height="200" viewbox="0 0 400 200" fill="currentColor" class="text-cyan-200"><ellipse cx="200" cy="100" rx="150" ry="60" /> <ellipse cx="80" cy="100" rx="50" ry="35" /> <path d="M320 80 Q380 60 370 100 Q380 140 320 120 Q340 100 320 80" /> <ellipse cx="60" cy="95" rx="8" ry="5" fill="#0a1628" /> <path d="M150 140 Q200 170 250 140" stroke="currentColor" stroke-width="3" fill="none" /> <path d="M150 60 Q200 30 250 60" stroke="currentColor" stroke-width="3" fill="none" />
+     </svg>
+    </div>
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+     <h1 id="main-title" class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-ice-100 mb-6 animate-fade-up" style="color: #e8f4f8;">Seeing Life Beneath the Surface</h1>
+     <p id="subtitle" class="font-body text-lg sm:text-xl md:text-2xl text-cyan-100/70 mb-12 animate-fade-up" style="animation-delay: 0.3s; color: rgba(207, 250, 254, 0.7);">An interactive journey into cetacean protection</p><button id="start-btn" onclick="navigateToPage(1)" class="group relative px-10 py-4 bg-transparent border-2 border-cyan-400/50 rounded-full text-cyan-100 font-medium text-lg transition-all duration-500 hover:bg-cyan-400/10 hover:border-cyan-300 hover:shadow-lg hover:shadow-cyan-500/20 animate-fade-up" style="animation-delay: 0.6s;"> <span id="cta-text">Start the Journey</span> <span class="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-2">→</span> </button>
+    </div><!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-pulse-slow">
+     <svg width="24" height="40" viewbox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="2" class="text-white/40"><rect x="1" y="1" width="22" height="38" rx="11" /> <circle cx="12" cy="12" r="3" fill="currentColor" class="animate-bounce" />
+     </svg>
+    </div>
+   </section><!-- Page 2: Sophie's Story -->
+   <section id="page-story" class="min-h-full ocean-gradient relative py-20" style="display: none;">
+    <div class="max-w-4xl mx-auto px-6"><button onclick="navigateToPage(0)" class="mb-12 text-cyan-300/70 hover:text-cyan-200 transition-colors flex items-center gap-2"> <span>←</span> Back </button>
+     <div class="space-y-32"><!-- Story Section 1 -->
+      <div class="story-section section-hidden" data-section="0">
+       <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="w-full md:w-1/2">
+         <svg viewbox="0 0 300 250" class="w-full max-w-sm mx-auto"><defs>
+           <lineargradient id="oceanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a3454" />
+            <stop offset="100%" style="stop-color:#0a1628" />
+           </lineargradient>
+          </defs> <rect fill="url(#oceanGrad)" width="300" height="250" rx="20" /> <g class="animate-float" style="animation-delay: 0.5s;">
+           <ellipse cx="150" cy="130" rx="80" ry="45" fill="#e8f4f8" />
+           <ellipse cx="85" cy="130" rx="35" ry="25" fill="#e8f4f8" />
+           <ellipse cx="70" cy="125" rx="5" ry="3" fill="#0a1628" />
+           <path d="M210 115 Q250 100 240 130 Q250 160 210 145" fill="#e8f4f8" />
+           <path d="M110 155 Q150 175 190 155" stroke="#d1d5db" stroke-width="2" fill="none" />
+          </g> <circle cx="50" cy="50" r="4" fill="rgba(255,255,255,0.2)" /> <circle cx="250" cy="80" r="3" fill="rgba(255,255,255,0.15)" /> <circle cx="80" cy="200" r="5" fill="rgba(255,255,255,0.1)" />
+         </svg>
+        </div>
+        <div class="w-full md:w-1/2 text-center md:text-left">
+         <h2 class="font-display text-4xl md:text-5xl text-cyan-50 mb-6">Meet Sophie</h2>
+         <p class="text-lg text-cyan-100/80 leading-relaxed">Sophie was born in the cold, expansive waters of the Arctic. Her world was vast—endless stretches of blue, the songs of her pod echoing through the depths, and the freedom to swim hundreds of miles.</p>
+        </div>
+       </div>
+      </div><!-- Story Section 2 -->
+      <div class="story-section section-hidden" data-section="1">
+       <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+        <div class="w-full md:w-1/2">
+         <svg viewbox="0 0 300 250" class="w-full max-w-sm mx-auto"><rect fill="#1a3454" width="300" height="250" rx="20" /> <rect x="20" y="180" width="260" height="60" fill="#374151" rx="5" /> <rect x="30" y="60" width="100" height="110" fill="#4b5563" rx="10" /> <rect x="170" y="60" width="100" height="110" fill="#4b5563" rx="10" /> <g transform="translate(80, 100)">
+           <ellipse cx="0" cy="0" rx="25" ry="15" fill="#d1d5db" />
+           <ellipse cx="-20" cy="0" rx="10" ry="7" fill="#d1d5db" />
+           <circle cx="-25" cy="-2" r="2" fill="#374151" />
+          </g> <line x1="80" y1="60" x2="80" y2="170" stroke="#6b7280" stroke-width="2" /> <line x1="220" y1="60" x2="220" y2="170" stroke="#6b7280" stroke-width="2" /> <text x="150" y="220" text-anchor="middle" fill="#9ca3af" font-size="12" font-family="Inter, sans-serif">
+           MARINE FACILITY
+          </text>
+         </svg>
+        </div>
+        <div class="w-full md:w-1/2 text-center md:text-left">
+         <h2 class="font-display text-4xl md:text-5xl text-cyan-50 mb-6">A Different Life</h2>
+         <p class="text-lg text-cyan-100/80 leading-relaxed">At three years old, Sophie was captured and transported to a marine park. Her ocean became a concrete pool, her family's songs replaced by the hum of filtration systems and the cheers of crowds.</p>
+        </div>
+       </div>
+      </div><!-- Story Section 3 -->
+      <div class="story-section section-hidden" data-section="2">
+       <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="w-full md:w-1/2">
+         <svg viewbox="0 0 300 250" class="w-full max-w-sm mx-auto"><rect fill="#0a1628" width="300" height="250" rx="20" /> <g opacity="0.3">
+           <ellipse cx="150" cy="125" rx="70" ry="40" fill="#6b7b8c" />
+           <ellipse cx="95" cy="125" rx="30" ry="20" fill="#6b7b8c" />
+          </g> <g transform="translate(150, 80)">
+           <circle cx="0" cy="0" r="30" fill="none" stroke="#4db8c7" stroke-width="2" stroke-dasharray="5,5" />
+           <text x="0" y="5" text-anchor="middle" fill="#4db8c7" font-size="24">
+            ?
+           </text>
+          </g> <text x="150" y="200" text-anchor="middle" fill="#6b7b8c" font-size="14" font-family="Inter, sans-serif">
+           What happened to Sophie?
+          </text> <text x="150" y="220" text-anchor="middle" fill="#4db8c7" font-size="12" font-family="Inter, sans-serif">
+           Explore the data to find out →
+          </text>
+         </svg>
+        </div>
+        <div class="w-full md:w-1/2 text-center md:text-left">
+         <h2 class="font-display text-4xl md:text-5xl text-cyan-50 mb-6">The Question</h2>
+         <p class="text-lg text-cyan-100/80 leading-relaxed mb-8">Sophie's story is not unique. Thousands of cetaceans live in captivity worldwide. What happens to them? What does protection really mean? Let's explore the data together.</p><button onclick="navigateToPage(2)" class="px-8 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all"> Explore the Global Data → </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Page 3: Global Data Map -->
+   <section id="page-map" class="min-h-full ocean-gradient relative py-12" style="display: none;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6"><button onclick="navigateToPage(1)" class="mb-6 text-cyan-300/70 hover:text-cyan-200 transition-colors flex items-center gap-2"> <span>←</span> Back to Story </button>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-cyan-50 mb-2 text-center">Global Cetacean Map</h2>
+     <p class="text-cyan-100/60 text-center mb-8">Interactive visualization of cetacean distribution, facilities, and protection</p><!-- Layer Controls -->
+     <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6"><button id="layer-distribution" onclick="toggleLayer('distribution')" class="layer-btn active px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm bg-cyan-500/30 border border-cyan-400/50 text-cyan-100 transition-all"> 🐋 Distribution </button> <button id="layer-facilities" onclick="toggleLayer('facilities')" class="layer-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm bg-white/5 border border-white/20 text-white/70 transition-all hover:bg-white/10"> 🏢 Facilities </button> <button id="layer-protected" onclick="toggleLayer('protected')" class="layer-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm bg-white/5 border border-white/20 text-white/70 transition-all hover:bg-white/10"> 🛡️ Protected Areas </button> <button id="layer-orgs" onclick="toggleLayer('orgs')" class="layer-btn px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm bg-white/5 border border-white/20 text-white/70 transition-all hover:bg-white/10"> 🌍 Organizations </button>
+     </div><!-- Map Container -->
+     <div class="relative glass-card rounded-2xl p-3 sm:p-4 mb-6">
+      <div id="map-container" class="relative w-full aspect-[2/1] sm:aspect-video bg-gradient-to-b from-slate-800/50 to-slate-900/50 rounded-xl overflow-hidden"><!-- SVG World Map -->
+       <svg id="world-map" viewbox="0 0 1000 500" class="w-full h-full" preserveaspectratio="xMidYMid meet"><defs>
+         <lineargradient id="mapGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#1e3a5f" />
+          <stop offset="100%" style="stop-color:#0a1628" />
+         </lineargradient>
+        </defs> <rect fill="url(#mapGrad)" width="1000" height="500" /> <!-- Simplified Continents --> <g fill="#2d4a6f" stroke="#3d5a7f" stroke-width="0.5"><!-- North America -->
+         <path d="M50,80 L200,60 L280,100 L300,180 L250,250 L180,280 L120,250 L80,180 L50,120 Z" /> <!-- South America -->
+         <path d="M200,280 L280,300 L300,400 L250,480 L180,480 L150,400 L180,320 Z" /> <!-- Europe -->
+         <path d="M450,80 L550,70 L580,120 L560,180 L500,200 L450,180 L440,120 Z" /> <!-- Africa -->
+         <path d="M450,200 L550,200 L580,300 L550,420 L480,450 L420,400 L430,280 Z" /> <!-- Asia -->
+         <path d="M580,60 L800,50 L900,100 L920,200 L850,280 L700,300 L600,250 L580,150 Z" /> <!-- Australia -->
+         <path d="M780,350 L880,340 L920,400 L880,450 L800,460 L760,420 Z" />
+        </g> <!-- Distribution Layer --> <g id="distribution-layer" class="map-layer">
+         <circle cx="100" cy="120" r="30" fill="rgba(77, 184, 199, 0.3)" stroke="#4db8c7" stroke-width="1" />
+         <circle cx="250" cy="200" r="25" fill="rgba(77, 184, 199, 0.3)" stroke="#4db8c7" stroke-width="1" />
+         <circle cx="500" cy="150" r="20" fill="rgba(77, 184, 199, 0.3)" stroke="#4db8c7" stroke-width="1" />
+         <circle cx="750" cy="180" r="35" fill="rgba(77, 184, 199, 0.3)" stroke="#4db8c7" stroke-width="1" />
+         <circle cx="850" cy="100" r="28" fill="rgba(77, 184, 199, 0.3)" stroke="#4db8c7" stroke-width="1" />
+         <circle cx="650" cy="280" r="22" fill="rgba(77, 184, 199, 0.3)" stroke="#4db8c7" stroke-width="1" />
+        </g> <!-- Facilities Layer --> <g id="facilities-layer" class="map-layer" style="display: none;">
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'facility', 'SeaWorld Orlando', 'USA • 23 cetaceans • Since 1973')">
+          <circle cx="220" cy="220" r="8" fill="#ef4444" />
+          <circle cx="220" cy="220" r="4" fill="#fca5a5" />
+         </g>
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'facility', 'Chimelong Ocean Kingdom', 'China • 42 cetaceans • Since 2014')">
+          <circle cx="780" cy="220" r="10" fill="#ef4444" />
+          <circle cx="780" cy="220" r="5" fill="#fca5a5" />
+         </g>
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'facility', 'Marineland Antibes', 'France • 12 cetaceans • Since 1970')">
+          <circle cx="490" cy="150" r="6" fill="#ef4444" />
+          <circle cx="490" cy="150" r="3" fill="#fca5a5" />
+         </g>
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'facility', 'Dubai Dolphinarium', 'UAE • 8 cetaceans • Since 2008')">
+          <circle cx="600" cy="230" r="5" fill="#ef4444" />
+          <circle cx="600" cy="230" r="2.5" fill="#fca5a5" />
+         </g>
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'facility', 'Port of Nagoya Aquarium', 'Japan • 15 cetaceans • Since 1992')">
+          <circle cx="870" cy="160" r="7" fill="#ef4444" />
+          <circle cx="870" cy="160" r="3.5" fill="#fca5a5" />
+         </g>
+        </g> <!-- Protected Areas Layer --> <g id="protected-layer" class="map-layer" style="display: none;">
+         <rect x="80" y="100" width="60" height="40" fill="rgba(34, 197, 94, 0.3)" stroke="#22c55e" stroke-width="1" rx="5" />
+         <rect x="480" y="160" width="50" height="35" fill="rgba(34, 197, 94, 0.3)" stroke="#22c55e" stroke-width="1" rx="5" />
+         <rect x="720" cy="180" width="70" height="50" fill="rgba(34, 197, 94, 0.3)" stroke="#22c55e" stroke-width="1" rx="5" />
+         <rect x="820" y="350" width="55" height="40" fill="rgba(34, 197, 94, 0.3)" stroke="#22c55e" stroke-width="1" rx="5" />
+        </g> <!-- Organizations Layer --> <g id="orgs-layer" class="map-layer" style="display: none;">
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'org', 'Whale and Dolphin Conservation', 'UK • Founded 1987')">
+          <polygon points="470,130 478,145 462,145" fill="#f59e0b" />
+         </g>
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'org', 'Ocean Conservation Society', 'USA • Founded 1992')">
+          <polygon points="180,180 188,195 172,195" fill="#f59e0b" />
+         </g>
+         <g class="map-marker cursor-pointer" onclick="showMapTooltip(event, 'org', 'Sea Shepherd', 'International • Founded 1977')">
+          <polygon points="300,150 308,165 292,165" fill="#f59e0b" />
+         </g>
+        </g>
+       </svg><!-- Tooltip -->
+       <div id="map-tooltip" class="tooltip text-sm"></div>
+      </div><!-- Legend -->
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mt-4 text-xs sm:text-sm">
+       <div class="flex items-center gap-2">
+        <div class="w-4 h-4 rounded-full bg-cyan-400/30 border border-cyan-400"></div><span class="text-cyan-100/70">Distribution Zone</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <div class="w-4 h-4 rounded-full bg-red-500"></div><span class="text-cyan-100/70">Captive Facility</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <div class="w-4 h-4 rounded bg-green-500/30 border border-green-500"></div><span class="text-cyan-100/70">Protected Area</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <div class="w-0 h-0 border-l-8 border-r-8 border-b-12 border-transparent border-b-amber-500"></div><span class="text-cyan-100/70">Organization</span>
+       </div>
+      </div>
+     </div><!-- Timeline Slider -->
+     <div class="glass-card rounded-xl p-4 sm:p-6">
+      <h3 class="text-lg font-medium text-cyan-50 mb-4">Legal Protection Timeline</h3>
+      <div class="flex items-center gap-4"><span class="text-cyan-100/60 text-sm">2015</span> <input type="range" id="timeline-slider" min="2015" max="2024" value="2024" class="flex-1" oninput="updateTimeline(this.value)"> <span class="text-cyan-100/60 text-sm">2024</span>
+      </div>
+      <div class="mt-4 text-center"><span id="timeline-year" class="text-2xl font-display text-cyan-300">2024</span>
+       <p id="timeline-info" class="text-sm text-cyan-100/60 mt-2">32 countries have enacted cetacean protection laws</p>
+      </div>
+     </div>
+     <div class="mt-8 text-center"><button onclick="navigateToPage(3)" class="px-8 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all"> View Captivity Dashboard → </button>
+     </div>
+    </div>
+   </section><!-- Page 4: Captivity Dashboard -->
+   <section id="page-dashboard" class="min-h-full ocean-gradient relative py-12" style="display: none;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6"><button onclick="navigateToPage(2)" class="mb-6 text-cyan-300/70 hover:text-cyan-200 transition-colors flex items-center gap-2"> <span>←</span> Back to Map </button>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-cyan-50 mb-2 text-center">Captivity &amp; Welfare Dashboard</h2>
+     <p class="text-cyan-100/60 text-center mb-8">Data-driven insights into cetacean captivity worldwide</p><!-- Filter Controls -->
+     <div class="flex flex-wrap justify-center gap-2 mb-8"><button id="filter-all" onclick="filterSpecies('all')" class="species-filter active px-4 py-2 rounded-full text-sm bg-cyan-500/30 border border-cyan-400/50 text-cyan-100"> All Species </button> <button id="filter-beluga" onclick="filterSpecies('beluga')" class="species-filter px-4 py-2 rounded-full text-sm bg-white/5 border border-white/20 text-white/70 hover:bg-white/10"> Beluga </button> <button id="filter-dolphin" onclick="filterSpecies('dolphin')" class="species-filter px-4 py-2 rounded-full text-sm bg-white/5 border border-white/20 text-white/70 hover:bg-white/10"> Bottlenose Dolphin </button> <button id="filter-orca" onclick="filterSpecies('orca')" class="species-filter px-4 py-2 rounded-full text-sm bg-white/5 border border-white/20 text-white/70 hover:bg-white/10"> Orca </button>
+     </div>
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"><!-- Line Chart: Growth of Marine Parks -->
+      <div class="glass-card rounded-2xl p-6">
+       <h3 class="text-lg font-medium text-cyan-50 mb-4">Growth of Marine Theme Parks</h3>
+       <p class="text-xs text-cyan-100/50 mb-4">Number of facilities worldwide (2015–2024)</p>
+       <div class="relative h-64">
+        <svg id="line-chart" viewbox="0 0 400 200" class="w-full h-full"><!-- Grid lines --> <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+          <line x1="50" y1="20" x2="50" y2="170" />
+          <line x1="50" y1="170" x2="380" y2="170" />
+          <line x1="50" y1="95" x2="380" y2="95" stroke-dasharray="4,4" />
+          <line x1="50" y1="57" x2="380" y2="57" stroke-dasharray="4,4" />
+          <line x1="50" y1="132" x2="380" y2="132" stroke-dasharray="4,4" />
+         </g> <!-- Y-axis labels --> <g fill="rgba(255,255,255,0.5)" font-size="10" font-family="Inter, sans-serif">
+          <text x="45" y="175" text-anchor="end">
+           0
+          </text>
+          <text x="45" y="137" text-anchor="end">
+           50
+          </text>
+          <text x="45" y="100" text-anchor="end">
+           100
+          </text>
+          <text x="45" y="62" text-anchor="end">
+           150
+          </text>
+          <text x="45" y="25" text-anchor="end">
+           200
+          </text>
+         </g> <!-- X-axis labels --> <g fill="rgba(255,255,255,0.5)" font-size="10" font-family="Inter, sans-serif">
+          <text x="50" y="185" text-anchor="middle">
+           2015
+          </text>
+          <text x="123" y="185" text-anchor="middle">
+           2017
+          </text>
+          <text x="196" y="185" text-anchor="middle">
+           2019
+          </text>
+          <text x="269" y="185" text-anchor="middle">
+           2021
+          </text>
+          <text x="342" y="185" text-anchor="middle">
+           2023
+          </text>
+         </g> <!-- Line path --> <path id="growth-line" d="M50,140 L86,135 L123,128 L159,118 L196,105 L232,95 L269,82 L305,72 L342,65 L378,58" fill="none" stroke="#4db8c7" stroke-width="2.5" stroke-linecap="round" /> <!-- Data points --> <g fill="#4db8c7">
+          <circle cx="50" cy="140" r="4" />
+          <circle cx="86" cy="135" r="4" />
+          <circle cx="123" cy="128" r="4" />
+          <circle cx="159" cy="118" r="4" />
+          <circle cx="196" cy="105" r="4" />
+          <circle cx="232" cy="95" r="4" />
+          <circle cx="269" cy="82" r="4" />
+          <circle cx="305" cy="72" r="4" />
+          <circle cx="342" cy="65" r="4" />
+          <circle cx="378" cy="58" r="4" />
+         </g>
+        </svg>
+       </div>
+       <div class="flex justify-between mt-4 text-sm"><span class="text-cyan-100/60">2015: <span class="text-cyan-300">42 facilities</span></span> <span class="text-cyan-100/60">2024: <span class="text-cyan-300">186 facilities</span></span>
+       </div>
+      </div><!-- Bar Chart: Facilities Status -->
+      <div class="glass-card rounded-2xl p-6">
+       <h3 class="text-lg font-medium text-cyan-50 mb-4">Facility Status by Region</h3>
+       <p class="text-xs text-cyan-100/50 mb-4">Operating vs Under Construction</p>
+       <div class="relative h-64">
+        <svg id="bar-chart" viewbox="0 0 400 200" class="w-full h-full"><!-- Grid lines --> <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
+          <line x1="50" y1="170" x2="380" y2="170" />
+          <line x1="50" y1="95" x2="380" y2="95" stroke-dasharray="4,4" />
+          <line x1="50" y1="57" x2="380" y2="57" stroke-dasharray="4,4" />
+         </g> <!-- Y-axis labels --> <g fill="rgba(255,255,255,0.5)" font-size="10" font-family="Inter, sans-serif">
+          <text x="45" y="175" text-anchor="end">
+           0
+          </text>
+          <text x="45" y="100" text-anchor="end">
+           40
+          </text>
+          <text x="45" y="62" text-anchor="end">
+           60
+          </text>
+         </g> <!-- Bars --> <g id="bar-group"><!-- Asia -->
+          <rect x="70" y="50" width="30" height="120" fill="#4db8c7" rx="3" class="chart-bar" />
+          <rect x="105" y="130" width="30" height="40" fill="#f59e0b" rx="3" class="chart-bar" />
+          <text x="100" y="185" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">
+           Asia
+          </text> <!-- N. America -->
+          <rect x="160" y="90" width="30" height="80" fill="#4db8c7" rx="3" class="chart-bar" />
+          <rect x="195" y="155" width="30" height="15" fill="#f59e0b" rx="3" class="chart-bar" />
+          <text x="190" y="185" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">
+           N. America
+          </text> <!-- Europe -->
+          <rect x="250" y="110" width="30" height="60" fill="#4db8c7" rx="3" class="chart-bar" />
+          <rect x="285" y="160" width="30" height="10" fill="#f59e0b" rx="3" class="chart-bar" />
+          <text x="280" y="185" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">
+           Europe
+          </text> <!-- Other -->
+          <rect x="340" y="140" width="30" height="30" fill="#4db8c7" rx="3" class="chart-bar" />
+          <rect x="375" y="150" width="20" height="20" fill="#f59e0b" rx="3" class="chart-bar" />
+          <text x="365" y="185" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">
+           Other
+          </text>
+         </g>
+        </svg>
+       </div>
+       <div class="flex justify-center gap-6 mt-4 text-sm">
+        <div class="flex items-center gap-2">
+         <div class="w-4 h-4 rounded bg-cyan-400"></div><span class="text-cyan-100/70">Operating</span>
+        </div>
+        <div class="flex items-center gap-2">
+         <div class="w-4 h-4 rounded bg-amber-500"></div><span class="text-cyan-100/70">Under Construction</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Incident Log -->
+     <div class="glass-card rounded-2xl p-6">
+      <h3 class="text-lg font-medium text-cyan-50 mb-4">Documented Welfare Incidents</h3>
+      <p class="text-xs text-cyan-100/50 mb-4">Selected cases from public records</p>
+      <div id="incident-log" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+       <div class="incident-card glass-card rounded-lg p-4" data-species="orca">
+        <div class="flex items-start justify-between mb-2"><span class="text-xs px-2 py-1 bg-red-500/20 text-red-300 rounded">Orca</span> <span class="text-xs text-cyan-100/50">2019</span>
+        </div>
+        <h4 class="font-medium text-cyan-50 mb-1">Tilikum Case</h4>
+        <p class="text-sm text-cyan-100/60">Documented behavioral abnormalities and health issues related to long-term captivity stress.</p>
+       </div>
+       <div class="incident-card glass-card rounded-lg p-4" data-species="beluga">
+        <div class="flex items-start justify-between mb-2"><span class="text-xs px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">Beluga</span> <span class="text-xs text-cyan-100/50">2021</span>
+        </div>
+        <h4 class="font-medium text-cyan-50 mb-1">Tank Size Concerns</h4>
+        <p class="text-sm text-cyan-100/60">Multiple facilities cited for inadequate tank dimensions failing to meet minimum welfare standards.</p>
+       </div>
+       <div class="incident-card glass-card rounded-lg p-4" data-species="dolphin">
+        <div class="flex items-start justify-between mb-2"><span class="text-xs px-2 py-1 bg-amber-500/20 text-amber-300 rounded">Dolphin</span> <span class="text-xs text-cyan-100/50">2022</span>
+        </div>
+        <h4 class="font-medium text-cyan-50 mb-1">Social Isolation</h4>
+        <p class="text-sm text-cyan-100/60">Reports of bottlenose dolphins showing signs of depression due to inadequate social groupings.</p>
+       </div>
+       <div class="incident-card glass-card rounded-lg p-4" data-species="orca">
+        <div class="flex items-start justify-between mb-2"><span class="text-xs px-2 py-1 bg-red-500/20 text-red-300 rounded">Orca</span> <span class="text-xs text-cyan-100/50">2023</span>
+        </div>
+        <h4 class="font-medium text-cyan-50 mb-1">Dorsal Fin Collapse</h4>
+        <p class="text-sm text-cyan-100/60">Documented physical abnormalities in 100% of captive male orcas worldwide.</p>
+       </div>
+       <div class="incident-card glass-card rounded-lg p-4" data-species="beluga">
+        <div class="flex items-start justify-between mb-2"><span class="text-xs px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">Beluga</span> <span class="text-xs text-cyan-100/50">2023</span>
+        </div>
+        <h4 class="font-medium text-cyan-50 mb-1">Import Controversy</h4>
+        <p class="text-sm text-cyan-100/60">Legal challenges regarding wild-caught beluga imports from Russia to Asian facilities.</p>
+       </div>
+       <div class="incident-card glass-card rounded-lg p-4" data-species="dolphin">
+        <div class="flex items-start justify-between mb-2"><span class="text-xs px-2 py-1 bg-amber-500/20 text-amber-300 rounded">Dolphin</span> <span class="text-xs text-cyan-100/50">2024</span>
+        </div>
+        <h4 class="font-medium text-cyan-50 mb-1">Water Quality Issues</h4>
+        <p class="text-sm text-cyan-100/60">Investigations reveal chemical treatment levels causing skin and eye irritation in multiple facilities.</p>
+       </div>
+      </div>
+     </div>
+     <div class="mt-8 text-center"><button onclick="navigateToPage(4)" class="px-8 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all"> Explore Whale Stories → </button>
+     </div>
+    </div>
+   </section><!-- Page 5: AR Whale Stories -->
+   <section id="page-ar" class="min-h-full ocean-gradient relative py-12" style="display: none;">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6"><button onclick="navigateToPage(3)" class="mb-6 text-cyan-300/70 hover:text-cyan-200 transition-colors flex items-center gap-2"> <span>←</span> Back to Dashboard </button>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-cyan-50 mb-2 text-center">Whale Stories</h2>
+     <p class="text-cyan-100/60 text-center mb-8">Real individuals, real stories, documented with care</p><!-- QR Code Section -->
+     <div class="glass-card rounded-2xl p-8 mb-8 text-center">
+      <div class="inline-block p-6 bg-white rounded-2xl mb-6">
+       <svg viewbox="0 0 100 100" width="120" height="120" class="mx-auto"><!-- Simulated QR code pattern --> <rect fill="#000" width="100" height="100" /> <rect fill="#fff" x="5" y="5" width="90" height="90" /> <g fill="#000">
+         <rect x="10" y="10" width="25" height="25" />
+         <rect x="65" y="10" width="25" height="25" />
+         <rect x="10" y="65" width="25" height="25" />
+         <rect x="15" y="15" width="15" height="15" fill="#fff" />
+         <rect x="70" y="15" width="15" height="15" fill="#fff" />
+         <rect x="15" y="70" width="15" height="15" fill="#fff" />
+         <rect x="20" y="20" width="5" height="5" />
+         <rect x="75" y="20" width="5" height="5" />
+         <rect x="20" y="75" width="5" height="5" /> <!-- Pattern elements -->
+         <rect x="40" y="10" width="5" height="5" />
+         <rect x="50" y="15" width="5" height="5" />
+         <rect x="45" y="25" width="5" height="5" />
+         <rect x="40" y="40" width="20" height="20" />
+         <rect x="45" y="45" width="10" height="10" fill="#fff" />
+         <rect x="10" y="45" width="5" height="5" />
+         <rect x="20" y="50" width="5" height="5" />
+         <rect x="85" y="45" width="5" height="5" />
+         <rect x="75" y="55" width="5" height="5" />
+         <rect x="65" y="65" width="5" height="5" />
+         <rect x="80" y="75" width="5" height="5" />
+         <rect x="45" y="70" width="5" height="5" />
+         <rect x="55" y="80" width="5" height="5" />
+        </g>
+       </svg>
+      </div>
+      <h3 class="text-xl font-display text-cyan-50 mb-2">Scan to Unlock AR Experience</h3>
+      <p class="text-cyan-100/60 text-sm max-w-md mx-auto">Point your phone camera at this code to meet the whales in augmented reality. <span class="text-cyan-300">(Concept demonstration)</span></p>
+     </div><!-- Whale Profile Cards -->
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="whale-profile glass-card rounded-2xl overflow-hidden">
+       <div class="h-48 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+        <svg viewbox="0 0 200 120" class="w-3/4 h-3/4"><ellipse cx="100" cy="60" rx="70" ry="40" fill="#e8f4f8" /> <ellipse cx="45" cy="60" rx="30" ry="20" fill="#e8f4f8" /> <circle cx="30" cy="55" r="4" fill="#0a1628" /> <path d="M155 45 Q190 30 180 60 Q190 90 155 75" fill="#e8f4f8" /> <path d="M70 85 Q100 100 130 85" stroke="#d1d5db" stroke-width="2" fill="none" />
+        </svg>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-3">
+         <h3 class="font-display text-2xl text-cyan-50">Luna</h3><span class="text-xs px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">Beluga</span>
+        </div>
+        <div class="space-y-2 text-sm text-cyan-100/70">
+         <p><span class="text-cyan-100/50">Age:</span> ~18 years</p>
+         <p><span class="text-cyan-100/50">Origin:</span> Wild-caught, Sea of Okhotsk</p>
+         <p><span class="text-cyan-100/50">Current Location:</span> Facility in East Asia</p>
+         <p><span class="text-cyan-100/50">Status:</span> Under observation for social stress indicators</p>
+        </div>
+       </div>
+      </div>
+      <div class="whale-profile glass-card rounded-2xl overflow-hidden">
+       <div class="h-48 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+        <svg viewbox="0 0 200 120" class="w-3/4 h-3/4"><ellipse cx="100" cy="60" rx="80" ry="35" fill="#1a1a2e" /> <ellipse cx="30" cy="55" rx="30" ry="22" fill="#1a1a2e" /> <ellipse cx="100" cy="70" rx="60" ry="20" fill="#e8f4f8" /> <circle cx="15" cy="50" r="4" fill="#e8f4f8" /> <path d="M165 40 Q200 25 195 60 Q200 95 165 80" fill="#1a1a2e" /> <path d="M130 30 L145 10 M140 35 L160 20" stroke="#1a1a2e" stroke-width="4" />
+        </svg>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-3">
+         <h3 class="font-display text-2xl text-cyan-50">Kiska</h3><span class="text-xs px-2 py-1 bg-red-500/20 text-red-300 rounded">Orca</span>
+        </div>
+        <div class="space-y-2 text-sm text-cyan-100/70">
+         <p><span class="text-cyan-100/50">Age:</span> ~47 years</p>
+         <p><span class="text-cyan-100/50">Origin:</span> Captured near Iceland, 1979</p>
+         <p><span class="text-cyan-100/50">Current Location:</span> Last solitary orca in Canada</p>
+         <p><span class="text-cyan-100/50">Status:</span> Documented repetitive behaviors, under advocacy attention</p>
+        </div>
+       </div>
+      </div>
+      <div class="whale-profile glass-card rounded-2xl overflow-hidden">
+       <div class="h-48 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+        <svg viewbox="0 0 200 120" class="w-3/4 h-3/4"><ellipse cx="100" cy="60" rx="60" ry="30" fill="#6b7b8c" /> <ellipse cx="50" cy="58" rx="25" ry="18" fill="#6b7b8c" /> <circle cx="35" cy="53" r="3" fill="#0a1628" /> <path d="M145 45 Q180 35 170 60 Q180 85 145 75" fill="#6b7b8c" /> <path d="M80 75 Q100 85 120 75" stroke="#4b5563" stroke-width="2" fill="none" /> <path d="M90 30 L95 15 M105 30 L110 15" stroke="#6b7b8c" stroke-width="3" />
+        </svg>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-3">
+         <h3 class="font-display text-2xl text-cyan-50">Shadow</h3><span class="text-xs px-2 py-1 bg-amber-500/20 text-amber-300 rounded">Bottlenose</span>
+        </div>
+        <div class="space-y-2 text-sm text-cyan-100/70">
+         <p><span class="text-cyan-100/50">Age:</span> ~22 years</p>
+         <p><span class="text-cyan-100/50">Origin:</span> Captive-born</p>
+         <p><span class="text-cyan-100/50">Current Location:</span> European marine park</p>
+         <p><span class="text-cyan-100/50">Status:</span> Part of breeding program, health monitoring ongoing</p>
+        </div>
+       </div>
+      </div>
+      <div class="whale-profile glass-card rounded-2xl overflow-hidden">
+       <div class="h-48 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+        <svg viewbox="0 0 200 120" class="w-3/4 h-3/4"><ellipse cx="100" cy="60" rx="70" ry="40" fill="#d1e7dd" /> <ellipse cx="45" cy="60" rx="30" ry="20" fill="#d1e7dd" /> <circle cx="30" cy="55" r="4" fill="#0a1628" /> <path d="M155 45 Q190 30 180 60 Q190 90 155 75" fill="#d1e7dd" /> <path d="M70 85 Q100 100 130 85" stroke="#a7c4bc" stroke-width="2" fill="none" /> <text x="100" y="65" text-anchor="middle" fill="#22c55e" font-size="20">
+          ✓
+         </text>
+        </svg>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-3">
+         <h3 class="font-display text-2xl text-cyan-50">Hope</h3><span class="text-xs px-2 py-1 bg-green-500/20 text-green-300 rounded">Beluga - Released</span>
+        </div>
+        <div class="space-y-2 text-sm text-cyan-100/70">
+         <p><span class="text-cyan-100/50">Age:</span> ~15 years</p>
+         <p><span class="text-cyan-100/50">Origin:</span> Former captive</p>
+         <p><span class="text-cyan-100/50">Current Location:</span> Sea sanctuary, Iceland</p>
+         <p><span class="text-cyan-100/50">Status:</span> <span class="text-green-300">Successfully rehabilitated and thriving</span></p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Ethical Note -->
+     <div class="glass-card rounded-xl p-6 border-l-4 border-cyan-400">
+      <h4 class="font-medium text-cyan-50 mb-2">📋 Data Transparency Note</h4>
+      <p class="text-sm text-cyan-100/70">All whale profiles are based on publicly documented cases and welfare reports. Names may be changed to protect ongoing legal proceedings. No personal visitor data is collected through this experience.</p>
+     </div>
+     <div class="mt-8 text-center"><button onclick="navigateToPage(5)" class="px-8 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all"> Play "A Beluga's Life" → </button>
+     </div>
+    </div>
+   </section><!-- Page 6: Interactive Game -->
+   <section id="page-game" class="min-h-full ocean-gradient relative py-12" style="display: none;">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6"><button onclick="navigateToPage(4)" class="mb-6 text-cyan-300/70 hover:text-cyan-200 transition-colors flex items-center gap-2"> <span>←</span> Back </button>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-cyan-50 mb-2 text-center">A Beluga's Life</h2>
+     <p class="text-cyan-100/60 text-center mb-8">Experience the world through Sophie's eyes</p>
+     <div id="game-container" class="glass-card rounded-2xl p-6 sm:p-8"><!-- Game Start Screen -->
+      <div id="game-start" class="text-center">
+       <div class="mb-8">
+        <svg viewbox="0 0 200 150" class="w-48 h-36 mx-auto animate-float"><defs>
+          <radialgradient id="waterGlow" cx="50%" cy="50%" r="50%">
+           <stop offset="0%" style="stop-color:#4db8c7;stop-opacity:0.3" />
+           <stop offset="100%" style="stop-color:#0a1628;stop-opacity:0" />
+          </radialgradient>
+         </defs> <ellipse cx="100" cy="75" rx="80" ry="60" fill="url(#waterGlow)" /> <ellipse cx="100" cy="80" rx="55" ry="32" fill="#e8f4f8" /> <ellipse cx="55" cy="80" rx="25" ry="17" fill="#e8f4f8" /> <circle cx="40" cy="75" r="4" fill="#0a1628" /> <path d="M140 65 Q170 55 165 80 Q170 105 140 95" fill="#e8f4f8" /> <path d="M75 100 Q100 115 125 100" stroke="#d1d5db" stroke-width="2" fill="none" />
+        </svg>
+       </div>
+       <h3 class="font-display text-2xl text-cyan-50 mb-4">You are Sophie</h3>
+       <p class="text-cyan-100/70 mb-8 max-w-md mx-auto">A young beluga whale in the Arctic Ocean. Your choices will shape your journey through life. What path will you take?</p><button onclick="startGame()" class="px-8 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all"> Begin Your Journey </button>
+      </div><!-- Game Play Area -->
+      <div id="game-play" style="display: none;">
+       <div id="game-scene" class="mb-8 text-center">
+        <div id="scene-image" class="mb-6"></div>
+        <p id="scene-text" class="text-lg text-cyan-100/90 leading-relaxed"></p>
+       </div>
+       <div id="game-choices" class="space-y-3"></div>
+       <div id="game-progress" class="mt-8 flex justify-center gap-2">
+        <div class="w-3 h-3 rounded-full bg-cyan-400" id="progress-1"></div>
+        <div class="w-3 h-3 rounded-full bg-white/20" id="progress-2"></div>
+        <div class="w-3 h-3 rounded-full bg-white/20" id="progress-3"></div>
+        <div class="w-3 h-3 rounded-full bg-white/20" id="progress-4"></div>
+        <div class="w-3 h-3 rounded-full bg-white/20" id="progress-5"></div>
+       </div>
+      </div><!-- Game End Screen -->
+      <div id="game-end" style="display: none;">
+       <div id="end-scene" class="mb-6 text-center"></div>
+       <h3 id="end-title" class="font-display text-2xl text-cyan-50 mb-4 text-center"></h3>
+       <p id="end-text" class="text-cyan-100/70 mb-6 text-center"></p>
+       <div id="end-reflection" class="glass-card rounded-xl p-6 mb-8 border-l-4 border-cyan-400">
+        <p id="reflection-text" class="text-cyan-100/80 italic"></p>
+       </div>
+       <div class="flex flex-col sm:flex-row gap-4 justify-center"><button onclick="restartGame()" class="px-6 py-3 bg-white/5 border border-white/20 rounded-full text-white/70 hover:bg-white/10 transition-all"> Play Again </button> <button onclick="navigateToPage(6)" class="px-6 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all"> Continue to Reflection → </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Page 7: Reflection & Call to Action -->
+   <section id="page-reflection" class="min-h-full ocean-gradient relative py-12" style="display: none;">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6"><button onclick="navigateToPage(5)" class="mb-6 text-cyan-300/70 hover:text-cyan-200 transition-colors flex items-center gap-2"> <span>←</span> Back </button>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-cyan-50 mb-8 text-center">Reflection</h2><!-- Reflection Questions -->
+     <div class="space-y-6 mb-12">
+      <div class="glass-card rounded-2xl p-8">
+       <h3 class="font-display text-2xl text-cyan-50 mb-4">What does protection mean?</h3>
+       <p class="text-cyan-100/70 mb-6">Protection isn't just about laws—it's about understanding that these intelligent, social beings deserve to live according to their nature. It means recognizing that a concrete tank can never replace the ocean.</p>
+       <div class="flex flex-wrap gap-3"><span class="px-4 py-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-sm text-cyan-200">Natural habitat</span> <span class="px-4 py-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-sm text-cyan-200">Family bonds</span> <span class="px-4 py-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-sm text-cyan-200">Freedom to swim</span> <span class="px-4 py-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-sm text-cyan-200">Species dignity</span>
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-8">
+       <h3 class="font-display text-2xl text-cyan-50 mb-4">What role do we play as visitors?</h3>
+       <p class="text-cyan-100/70 mb-6">Every ticket purchased, every choice we make sends a message. As visitors, we have the power to support ethical alternatives—sanctuaries, responsible whale watching, and conservation education that doesn't require captivity.</p>
+       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="text-center p-4 bg-white/5 rounded-xl">
+         <div class="text-3xl mb-2">
+          🎟️
+         </div>
+         <p class="text-sm text-cyan-100/70">Choose ethical tourism</p>
+        </div>
+        <div class="text-center p-4 bg-white/5 rounded-xl">
+         <div class="text-3xl mb-2">
+          📢
+         </div>
+         <p class="text-sm text-cyan-100/70">Share knowledge</p>
+        </div>
+        <div class="text-center p-4 bg-white/5 rounded-xl">
+         <div class="text-3xl mb-2">
+          💚
+         </div>
+         <p class="text-sm text-cyan-100/70">Support sanctuaries</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- Call to Action -->
+     <div class="text-center mb-12">
+      <h3 class="font-display text-2xl text-cyan-50 mb-6">Take Action</h3>
+      <div class="flex flex-wrap justify-center gap-4"><a href="#" class="px-6 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all inline-flex items-center gap-2"> 📚 Learn More </a> <a href="#" class="px-6 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all inline-flex items-center gap-2"> 📊 Explore Data Sources </a> <a href="#" class="px-6 py-3 bg-cyan-500/20 border border-cyan-400/50 rounded-full text-cyan-100 hover:bg-cyan-500/30 transition-all inline-flex items-center gap-2"> 💙 Support Conservation </a>
+      </div>
+     </div><!-- Transparency Section -->
+     <div class="glass-card rounded-2xl p-8 border-l-4 border-cyan-400">
+      <h3 class="font-display text-xl text-cyan-50 mb-4">📋 Transparency Statement</h3>
+      <div class="space-y-4 text-sm text-cyan-100/70">
+       <div>
+        <h4 class="font-medium text-cyan-100 mb-1">Data Sources</h4>
+        <p>Information compiled from CITES databases, WDC reports, marine mammal inventory databases, peer-reviewed research, and publicly available facility records (2015-2024).</p>
+       </div>
+       <div>
+        <h4 class="font-medium text-cyan-100 mb-1">Privacy</h4>
+        <p>This experience does not collect, store, or process any personal visitor data. All interactions are processed locally in your browser.</p>
+       </div>
+       <div>
+        <h4 class="font-medium text-cyan-100 mb-1">Ethical Visualization</h4>
+        <p>We commit to presenting data accurately and without sensationalism. Numbers represent real animals and real welfare concerns. Our goal is education, not exploitation.</p>
+       </div>
+      </div>
+     </div><!-- Return to Start -->
+     <div class="mt-12 text-center"><button onclick="navigateToPage(0)" class="px-8 py-3 bg-white/5 border border-white/20 rounded-full text-white/70 hover:bg-white/10 transition-all"> ← Return to Beginning </button>
+     </div><!-- Footer -->
+     <footer class="mt-16 pt-8 border-t border-white/10 text-center">
+      <p class="text-cyan-100/40 text-sm">Seeing Life Beneath the Surface © 2024<br>
+        An educational experience for cetacean protection awareness</p>
+     </footer>
+    </div>
+   </section>
+  </div>
+  <script>
+    // Configuration
+    const defaultConfig = {
+      main_title: 'Seeing Life Beneath the Surface',
+      subtitle: 'An interactive journey into cetacean protection',
+      cta_button: 'Start the Journey',
+      background_color: '#0a1628',
+      surface_color: '#1e3a5f',
+      text_color: '#e8f4f8',
+      accent_color: '#4db8c7',
+      secondary_accent: '#f59e0b'
+    };
+
+    let config = { ...defaultConfig };
+    let currentPage = 0;
+    const totalPages = 7;
+
+    // Game state
+    let gameState = {
+      step: 0,
+      path: 'wild',
+      choices: []
+    };
+
+    const gameScenes = [
+      {
+        text: "You're swimming with your pod in the cold Arctic waters. The songs of your family echo around you. Suddenly, you hear strange sounds approaching...",
+        image: 'arctic',
+        choices: [
+          { text: "Swim toward the sounds curiously", next: 1, path: 'captive' },
+          { text: "Follow your mother deeper into the ocean", next: 1, path: 'wild' }
+        ]
+      },
+      {
+        text: {
+          wild: "Your mother leads you through kelp forests and past ancient ice formations. She teaches you the songs of your ancestors. Years pass peacefully.",
+          captive: "Nets surround you. Despite your struggles, you're lifted from the water. The last thing you see is the vast ocean disappearing..."
+        },
+        image: 'journey',
+        choices: [
+          { text: "Continue your journey", next: 2 }
+        ]
+      },
+      {
+        text: {
+          wild: "You've grown strong. Your pod travels hundreds of miles, following the food. One day, you encounter a boat—humans are watching from a distance, cameras clicking.",
+          captive: "You wake in a concrete pool. The water tastes wrong. There are walls everywhere. Other belugas are here, but they speak differently."
+        },
+        image: 'encounter',
+        choices: [
+          { text: "Approach the surface", next: 3, path: 'curious' },
+          { text: "Dive deep and continue", next: 3, path: 'cautious' }
+        ]
+      },
+      {
+        text: {
+          wild: "The humans seem respectful, keeping their distance. You sense they mean no harm. This is a different kind of encounter.",
+          captive: "Trainers appear with fish. The other belugas perform tricks for food. You feel the weight of the walls around you."
+        },
+        image: 'present',
+        choices: [
+          { text: "See your future", next: 4 }
+        ]
+      },
+      {
+        text: {
+          wild: "You now lead a pod of your own. Your songs carry across miles of ocean. Life is as it should be—vast, free, and full of possibility.",
+          captive: "Years pass. The walls never change. You've learned the tricks, but you've forgotten the songs. Sometimes you dream of endless blue..."
+        },
+        image: 'future',
+        choices: []
+      }
+    ];
+
+    // Initialize SDK
+    async function initApp() {
+      if (window.elementSdk) {
+        await window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (newConfig) => {
+            config = { ...defaultConfig, ...newConfig };
+            applyConfig();
+          },
+          mapToCapabilities: (cfg) => ({
+            recolorables: [
+              {
+                get: () => cfg.background_color || defaultConfig.background_color,
+                set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+              },
+              {
+                get: () => cfg.surface_color || defaultConfig.surface_color,
+                set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+              },
+              {
+                get: () => cfg.text_color || defaultConfig.text_color,
+                set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+              },
+              {
+                get: () => cfg.accent_color || defaultConfig.accent_color,
+                set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+              },
+              {
+                get: () => cfg.secondary_accent || defaultConfig.secondary_accent,
+                set: (v) => { cfg.secondary_accent = v; window.elementSdk.setConfig({ secondary_accent: v }); }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (cfg) => new Map([
+            ['main_title', cfg.main_title || defaultConfig.main_title],
+            ['subtitle', cfg.subtitle || defaultConfig.subtitle],
+            ['cta_button', cfg.cta_button || defaultConfig.cta_button]
+          ])
+        });
+        config = { ...defaultConfig, ...window.elementSdk.config };
+      }
+      applyConfig();
+      setupScrollObserver();
+    }
+
+    function applyConfig() {
+      // Apply text content
+      document.getElementById('main-title').textContent = config.main_title || defaultConfig.main_title;
+      document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+      document.getElementById('cta-text').textContent = config.cta_button || defaultConfig.cta_button;
+      
+      // Apply colors
+      document.documentElement.style.setProperty('--deep-ocean', config.background_color || defaultConfig.background_color);
+      document.documentElement.style.setProperty('--arctic-blue', config.surface_color || defaultConfig.surface_color);
+      document.documentElement.style.setProperty('--ice-white', config.text_color || defaultConfig.text_color);
+      document.documentElement.style.setProperty('--accent-cyan', config.accent_color || defaultConfig.accent_color);
+      document.documentElement.style.setProperty('--secondary-accent', config.secondary_accent || defaultConfig.secondary_accent);
+    }
+
+    // Navigation
+    function navigateToPage(pageIndex) {
+      const pages = [
+        'page-landing', 'page-story', 'page-map', 'page-dashboard',
+        'page-ar', 'page-game', 'page-reflection'
+      ];
+      
+      pages.forEach((id, idx) => {
+        const page = document.getElementById(id);
+        if (page) {
+          page.style.display = idx === pageIndex ? 'block' : 'none';
+        }
+      });
+      
+      currentPage = pageIndex;
+      updateNavDots();
+      
+      // Show/hide nav dots
+      const navDots = document.getElementById('nav-dots');
+      navDots.style.display = pageIndex > 0 ? 'flex' : 'none';
+      
+      // Scroll to top
+      document.getElementById('app').scrollTop = 0;
+      
+      // Trigger scroll animations for story page
+      if (pageIndex === 1) {
+        setTimeout(setupScrollObserver, 100);
+      }
+    }
+
+    function updateNavDots() {
+      document.querySelectorAll('.nav-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentPage);
+      });
+    }
+
+    // Nav dot click handlers
+    document.querySelectorAll('.nav-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const page = parseInt(dot.dataset.page);
+        navigateToPage(page);
+      });
+    });
+
+    // Scroll-triggered animations
+    function setupScrollObserver() {
+      const sections = document.querySelectorAll('.story-section');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('section-hidden');
+            entry.target.classList.add('section-visible');
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+    }
+
+    // Map functionality
+    let activeLayers = ['distribution'];
+
+    function toggleLayer(layer) {
+      const layerElement = document.getElementById(`${layer}-layer`);
+      const button = document.getElementById(`layer-${layer}`);
+      
+      if (activeLayers.includes(layer)) {
+        activeLayers = activeLayers.filter(l => l !== layer);
+        layerElement.style.display = 'none';
+        button.classList.remove('active');
+        button.classList.remove('bg-cyan-500/30', 'border-cyan-400/50', 'text-cyan-100');
+        button.classList.add('bg-white/5', 'border-white/20', 'text-white/70');
+      } else {
+        activeLayers.push(layer);
+        layerElement.style.display = 'block';
+        button.classList.add('active');
+        button.classList.remove('bg-white/5', 'border-white/20', 'text-white/70');
+        button.classList.add('bg-cyan-500/30', 'border-cyan-400/50', 'text-cyan-100');
+      }
+    }
+
+    function showMapTooltip(event, type, title, info) {
+      const tooltip = document.getElementById('map-tooltip');
+      const mapContainer = document.getElementById('map-container');
+      const rect = mapContainer.getBoundingClientRect();
+      
+      const icons = { facility: '🏢', org: '🌍', protected: '🛡️' };
+      
+      tooltip.innerHTML = `
+        <div class="flex items-center gap-2 mb-1">
+          <span>${icons[type] || '📍'}</span>
+          <span class="font-medium text-cyan-50">${title}</span>
+        </div>
+        <p class="text-cyan-100/70 text-xs">${info}</p>
+      `;
+      
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      tooltip.style.left = `${x + 10}px`;
+      tooltip.style.top = `${y - 10}px`;
+      tooltip.classList.add('visible');
+      
+      setTimeout(() => {
+        tooltip.classList.remove('visible');
+      }, 3000);
+    }
+
+    // Timeline
+    const timelineData = {
+      2015: { countries: 12, info: '12 countries had enacted cetacean protection laws' },
+      2016: { countries: 14, info: '14 countries with protection laws • India bans dolphinariums' },
+      2017: { countries: 16, info: '16 countries • France announces phase-out plan' },
+      2018: { countries: 19, info: '19 countries • Canada passes "Free Willy" bill' },
+      2019: { countries: 22, info: '22 countries • Growing global awareness' },
+      2020: { countries: 24, info: '24 countries • Pandemic impacts marine parks' },
+      2021: { countries: 26, info: '26 countries • Several US states strengthen laws' },
+      2022: { countries: 28, info: '28 countries • EU discusses unified policy' },
+      2023: { countries: 30, info: '30 countries • Historic protections in Asia' },
+      2024: { countries: 32, info: '32 countries have enacted cetacean protection laws' }
+    };
+
+    function updateTimeline(year) {
+      document.getElementById('timeline-year').textContent = year;
+      document.getElementById('timeline-info').textContent = timelineData[year].info;
+    }
+
+    // Species filter
+    function filterSpecies(species) {
+      const buttons = document.querySelectorAll('.species-filter');
+      buttons.forEach(btn => {
+        btn.classList.remove('active', 'bg-cyan-500/30', 'border-cyan-400/50', 'text-cyan-100');
+        btn.classList.add('bg-white/5', 'border-white/20', 'text-white/70');
+      });
+      
+      const activeBtn = document.getElementById(`filter-${species}`);
+      activeBtn.classList.add('active', 'bg-cyan-500/30', 'border-cyan-400/50', 'text-cyan-100');
+      activeBtn.classList.remove('bg-white/5', 'border-white/20', 'text-white/70');
+      
+      const cards = document.querySelectorAll('.incident-card');
+      cards.forEach(card => {
+        if (species === 'all' || card.dataset.species === species) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Game functionality
+    function startGame() {
+      gameState = { step: 0, path: 'wild', choices: [] };
+      document.getElementById('game-start').style.display = 'none';
+      document.getElementById('game-play').style.display = 'block';
+      document.getElementById('game-end').style.display = 'none';
+      renderGameScene();
+    }
+
+    function renderGameScene() {
+      const scene = gameScenes[gameState.step];
+      const sceneText = typeof scene.text === 'object' ? scene.text[gameState.path] : scene.text;
+      
+      // Update scene
+      document.getElementById('scene-text').textContent = sceneText;
+      
+      // Render scene image
+      const imageContainer = document.getElementById('scene-image');
+      imageContainer.innerHTML = getSceneImage(scene.image, gameState.path);
+      
+      // Render choices
+      const choicesContainer = document.getElementById('game-choices');
+      
+      if (scene.choices.length === 0) {
+        // End of game
+        showGameEnd();
+        return;
+      }
+      
+      choicesContainer.innerHTML = scene.choices.map((choice, idx) => `
+        <button onclick="makeChoice(${idx})" class="choice-card w-full p-4 text-left glass-card rounded-xl border border-white/10 hover:border-cyan-400/50">
+          <span class="text-cyan-100">${choice.text}</span>
+        </button>
+      `).join('');
+      
+      // Update progress
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById(`progress-${i}`);
+        if (dot) {
+          dot.classList.toggle('bg-cyan-400', i <= gameState.step + 1);
+          dot.classList.toggle('bg-white/20', i > gameState.step + 1);
+        }
+      }
+    }
+
+    function getSceneImage(type, path) {
+      const isWild = path === 'wild';
+      
+      const images = {
+        arctic: `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto animate-float">
+            <defs>
+              <linearGradient id="arcticGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#1a3454"/>
+                <stop offset="100%" style="stop-color:#0a1628"/>
+              </linearGradient>
+            </defs>
+            <rect fill="url(#arcticGrad)" width="300" height="150" rx="15"/>
+            <g class="animate-float">
+              <ellipse cx="150" cy="80" rx="50" ry="28" fill="#e8f4f8"/>
+              <ellipse cx="110" cy="80" rx="22" ry="15" fill="#e8f4f8"/>
+              <circle cx="95" cy="76" r="3" fill="#0a1628"/>
+            </g>
+            <circle cx="250" cy="30" r="3" fill="rgba(255,255,255,0.2)"/>
+            <circle cx="50" cy="120" r="4" fill="rgba(255,255,255,0.15)"/>
+          </svg>
+        `,
+        journey: isWild ? `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <rect fill="#0a1628" width="300" height="150" rx="15"/>
+            <path d="M0 100 Q75 70 150 90 Q225 110 300 80" stroke="#1a3454" stroke-width="40" fill="none"/>
+            <g transform="translate(150, 75)" class="animate-float">
+              <ellipse cx="0" cy="0" rx="40" ry="22" fill="#e8f4f8"/>
+              <ellipse cx="-30" cy="0" rx="18" ry="12" fill="#e8f4f8"/>
+              <circle cx="-40" cy="-3" r="3" fill="#0a1628"/>
+            </g>
+            <path d="M20 60 Q40 50 60 65" stroke="rgba(77,184,199,0.3)" stroke-width="2" fill="none"/>
+            <path d="M240 40 Q260 30 280 45" stroke="rgba(77,184,199,0.3)" stroke-width="2" fill="none"/>
+          </svg>
+        ` : `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <rect fill="#374151" width="300" height="150" rx="15"/>
+            <rect x="20" y="20" width="260" height="110" fill="#4b5563" rx="10"/>
+            <rect x="30" y="30" width="240" height="90" fill="#1a3454" rx="5"/>
+            <g transform="translate(150, 75)">
+              <ellipse cx="0" cy="0" rx="35" ry="18" fill="#d1d5db"/>
+              <ellipse cx="-25" cy="0" rx="15" ry="10" fill="#d1d5db"/>
+              <circle cx="-32" cy="-2" r="2" fill="#374151"/>
+            </g>
+            <line x1="50" y1="30" x2="50" y2="120" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,5"/>
+            <line x1="250" y1="30" x2="250" y2="120" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,5"/>
+          </svg>
+        `,
+        encounter: isWild ? `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <rect fill="#0a1628" width="300" height="150" rx="15"/>
+            <path d="M100 30 L110 20 L200 20 L210 30 L200 30 L190 25 L120 25 L110 30 Z" fill="#4b5563"/>
+            <rect x="130" y="30" width="60" height="15" fill="#374151"/>
+            <g transform="translate(150, 95)" class="animate-float">
+              <ellipse cx="0" cy="0" rx="45" ry="25" fill="#e8f4f8"/>
+              <ellipse cx="-35" cy="0" rx="20" ry="13" fill="#e8f4f8"/>
+              <circle cx="-45" cy="-3" r="3" fill="#0a1628"/>
+            </g>
+            <circle cx="145" cy="55" r="5" fill="#f59e0b" opacity="0.6"/>
+            <circle cx="165" cy="50" r="4" fill="#f59e0b" opacity="0.4"/>
+          </svg>
+        ` : `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <rect fill="#374151" width="300" height="150" rx="15"/>
+            <ellipse cx="150" cy="130" rx="100" ry="30" fill="#1a3454"/>
+            <g transform="translate(150, 100)">
+              <ellipse cx="0" cy="0" rx="30" ry="16" fill="#9ca3af"/>
+              <ellipse cx="-22" cy="0" rx="12" ry="8" fill="#9ca3af"/>
+            </g>
+            <circle cx="80" cy="50" r="15" fill="#fcd34d"/>
+            <circle cx="220" cy="50" r="15" fill="#fcd34d"/>
+            <rect x="60" y="70" width="40" height="5" fill="#6b7280" rx="2"/>
+            <rect x="200" y="70" width="40" height="5" fill="#6b7280" rx="2"/>
+          </svg>
+        `,
+        present: isWild ? `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <defs>
+              <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.3"/>
+                <stop offset="100%" style="stop-color:#0a1628"/>
+              </linearGradient>
+            </defs>
+            <rect fill="url(#sunsetGrad)" width="300" height="150" rx="15"/>
+            <circle cx="250" cy="30" r="20" fill="#fcd34d" opacity="0.6"/>
+            <g transform="translate(100, 90)" class="animate-float">
+              <ellipse cx="0" cy="0" rx="50" ry="28" fill="#e8f4f8"/>
+              <ellipse cx="-38" cy="0" rx="22" ry="15" fill="#e8f4f8"/>
+              <circle cx="-50" cy="-3" r="4" fill="#0a1628"/>
+              <path d="M35 -15 Q60 -25 55 0 Q60 25 35 15" fill="#e8f4f8"/>
+            </g>
+            <path d="M0 130 Q150 100 300 130" stroke="#1a3454" stroke-width="3" fill="none"/>
+          </svg>
+        ` : `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <rect fill="#4b5563" width="300" height="150" rx="15"/>
+            <ellipse cx="150" cy="110" rx="80" ry="25" fill="#1a3454"/>
+            <g transform="translate(150, 85)">
+              <ellipse cx="0" cy="0" rx="40" ry="22" fill="#6b7b8c"/>
+              <ellipse cx="-30" cy="0" rx="17" ry="11" fill="#6b7b8c"/>
+              <circle cx="-38" cy="-2" r="3" fill="#374151"/>
+            </g>
+            <rect x="20" y="20" width="50" height="30" fill="#374151" rx="5"/>
+            <text x="45" y="40" text-anchor="middle" fill="#9ca3af" font-size="8">EXIT</text>
+            <circle cx="280" cy="25" r="10" fill="#ef4444" opacity="0.5"/>
+          </svg>
+        `,
+        future: isWild ? `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <defs>
+              <linearGradient id="oceanFuture" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#1a3454"/>
+                <stop offset="100%" style="stop-color:#0a1628"/>
+              </linearGradient>
+            </defs>
+            <rect fill="url(#oceanFuture)" width="300" height="150" rx="15"/>
+            <g transform="translate(80, 60)" class="animate-float" style="animation-delay: 0.2s;">
+              <ellipse cx="0" cy="0" rx="25" ry="14" fill="#e8f4f8" opacity="0.6"/>
+            </g>
+            <g transform="translate(150, 80)" class="animate-float">
+              <ellipse cx="0" cy="0" rx="55" ry="30" fill="#e8f4f8"/>
+              <ellipse cx="-42" cy="0" rx="24" ry="16" fill="#e8f4f8"/>
+              <circle cx="-55" cy="-4" r="4" fill="#0a1628"/>
+            </g>
+            <g transform="translate(230, 100)" class="animate-float" style="animation-delay: 0.5s;">
+              <ellipse cx="0" cy="0" rx="20" ry="11" fill="#e8f4f8" opacity="0.7"/>
+            </g>
+            <text x="150" y="140" text-anchor="middle" fill="#22c55e" font-size="12">✦ FREE ✦</text>
+          </svg>
+        ` : `
+          <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+            <rect fill="#374151" width="300" height="150" rx="15"/>
+            <rect x="30" y="30" width="240" height="90" fill="#1a3454" rx="5"/>
+            <g transform="translate(150, 75)">
+              <ellipse cx="0" cy="0" rx="45" ry="25" fill="#6b7b8c" opacity="0.7"/>
+              <ellipse cx="-35" cy="0" rx="20" ry="13" fill="#6b7b8c" opacity="0.7"/>
+              <circle cx="-45" cy="-3" r="3" fill="#374151"/>
+            </g>
+            <text x="150" y="25" text-anchor="middle" fill="#6b7280" font-size="10">YEARS PASS...</text>
+            <g fill="rgba(255,255,255,0.1)">
+              <circle cx="60" cy="50" r="8"/>
+              <circle cx="100" cy="110" r="6"/>
+              <circle cx="200" cy="45" r="7"/>
+              <circle cx="240" cy="100" r="5"/>
+            </g>
+          </svg>
+        `
+      };
+      
+      return images[type] || images.arctic;
+    }
+
+    function makeChoice(choiceIndex) {
+      const scene = gameScenes[gameState.step];
+      const choice = scene.choices[choiceIndex];
+      
+      gameState.choices.push(choice.text);
+      
+      if (choice.path) {
+        gameState.path = choice.path === 'captive' ? 'captive' : gameState.path;
+      }
+      
+      gameState.step = choice.next;
+      renderGameScene();
+    }
+
+    function showGameEnd() {
+      document.getElementById('game-play').style.display = 'none';
+      document.getElementById('game-end').style.display = 'block';
+      
+      const isWild = gameState.path === 'wild';
+      
+      document.getElementById('end-scene').innerHTML = getSceneImage('future', gameState.path);
+      
+      document.getElementById('end-title').textContent = isWild ? 
+        "Freedom's Song" : "The Weight of Walls";
+      
+      document.getElementById('end-text').textContent = isWild ?
+        "Sophie lived a full life in the wild, raising calves and teaching them the ancient songs of her ancestors. Her family continues to swim the Arctic waters today." :
+        "Sophie spent her remaining years in captivity. She performed for crowds but never forgot the vastness of the ocean she once knew.";
+      
+      document.getElementById('reflection-text').textContent = isWild ?
+        "Every cetacean deserves this story—the freedom to swim, to sing, to live according to their nature. Your choices in this experience mirror the choices we make as a society." :
+        "This is Sophie's story, but it doesn't have to be every whale's story. Our choices—as visitors, as consumers, as citizens—can write different endings.";
+    }
+
+    function restartGame() {
+      document.getElementById('game-end').style.display = 'none';
+      document.getElementById('game-start').style.display = 'block';
+    }
+
+    // Initialize
+    initApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cc212efa3e92b52',t:'MTc3MDc5NDMyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
