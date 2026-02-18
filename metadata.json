@@ -1,0 +1,63 @@
+{
+  "project_name": "Captive Cetacean Data Integration Project",
+
+  "datasets": [
+
+    {
+      "dataset_name": "CCA Report Appendix Tables (Raw Collection)",
+      "source": "China Cetacean Alliance",
+      "source_url": "https://www.chinacetaceanalliance.org/wp-content/uploads/2025/02/Final_24-CCA-Report-English.pdf",
+      "repository_location": "/CCA_tables/",
+      "description": "Raw appendix tables extracted from multiple pages of the CCA investigative report (2015–2024). Each file corresponds to one page of tabular data extracted from the PDF report. File schemas vary across pages.",
+      "file_format": "XLSX (multiple files)",
+      "structure_note": "Heterogeneous schemas across files; column names and structure vary.",
+      "temporal_coverage": "2015–2024",
+      "spatial_coverage": "Mainland China",
+      "collection_date": "Extracted from published report (2025 edition)",
+      "processing_date": "2026-02 (data extraction and upload)",
+      "license": "Public NGO report; used for non-commercial academic purposes",
+      "ethical_considerations": "Facility-level institutional data only. No personal identifiers. Welfare-sensitive content presented without sensational framing.",
+      "accessibility": "Stored in XLSX format. UTF-8 encoding when converted to CSV."
+    },
+
+    {
+      "dataset_name": "CCA Unified Facilities Dataset (Processed)",
+      "source": "Derived from CCA Report Appendix Tables",
+      "source_url": "Internal processing from raw appendix files",
+      "repository_location": "/data/cca_unified_dataset.csv",
+      "description": "Standardized and cleaned dataset created by merging heterogeneous appendix tables into a unified schema. Used as the primary dataset for visualization.",
+      "variables": [
+        {"name": "venue_name", "type": "string"},
+        {"name": "city", "type": "string"},
+        {"name": "province", "type": "string"},
+        {"name": "species", "type": "string"},
+        {"name": "year", "type": "integer"},
+        {"name": "facility_status", "type": "string"},
+        {"name": "incident_flag", "type": "boolean"}
+      ],
+      "schema_alignment_method": "Column name normalization, species taxonomy standardization, date parsing, duplicate removal.",
+      "temporal_coverage": "2015–2024",
+      "spatial_coverage": "Mainland China",
+      "collection_date": "Derived from report data",
+      "processing_date": "2026-02",
+      "license": "Derived dataset for academic research use",
+      "ethical_considerations": "No individual animal identifiers included. Incident data aggregated where appropriate.",
+      "accessibility": "CSV format, machine-readable, UTF-8 encoding."
+    }
+
+  ],
+
+  "data_pipeline": {
+    "raw_folder": "/CCA_tables/",
+    "cleaning_script": "/scripts/data_cleaning.py",
+    "output_dataset": "/data/cca_unified_dataset.csv",
+    "processing_steps": [
+      "Load multiple XLSX files",
+      "Standardize column names",
+      "Normalize species naming",
+      "Extract year from date fields",
+      "Remove duplicates",
+      "Export unified CSV"
+    ]
+  }
+}
