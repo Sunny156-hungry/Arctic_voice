@@ -1,6 +1,9 @@
 {
   "project_name": "Captive Cetacean Data Integration Project",
 
+  "metadata_version": "1.0",
+  "last_updated": "2026-03",
+
   "datasets": [
 
     {
@@ -27,13 +30,13 @@
       "repository_location": "/data/cca_unified_dataset.csv",
       "description": "Standardized and cleaned dataset created by merging heterogeneous appendix tables into a unified schema. Used as the primary dataset for visualization.",
       "variables": [
-        {"name": "venue_name", "type": "string"},
-        {"name": "city", "type": "string"},
-        {"name": "province", "type": "string"},
-        {"name": "species", "type": "string"},
-        {"name": "year", "type": "integer"},
-        {"name": "facility_status", "type": "string"},
-        {"name": "incident_flag", "type": "boolean"}
+        { "name": "venue_name", "type": "string" },
+        { "name": "city", "type": "string" },
+        { "name": "province", "type": "string" },
+        { "name": "species", "type": "string" },
+        { "name": "year", "type": "integer" },
+        { "name": "facility_status", "type": "string" },
+        { "name": "incident_flag", "type": "boolean" }
       ],
       "schema_alignment_method": "Column name normalization, species taxonomy standardization, date parsing, duplicate removal.",
       "temporal_coverage": "2015–2024",
@@ -43,6 +46,29 @@
       "license": "Derived dataset for academic research use",
       "ethical_considerations": "No individual animal identifiers included. Incident data aggregated where appropriate.",
       "accessibility": "CSV format, machine-readable, UTF-8 encoding."
+    },
+
+    {
+      "dataset_name": "CCA Cetacean Interaction Events (2012–2019)",
+      "source": "China Cetacean Alliance (CCA Investigative Report)",
+      "source_url": "https://www.chinacetaceanalliance.org/wp-content/uploads/2025/02/Final_24-CCA-Report-English.pdf",
+      "repository_location": "/data/cca_events_2012_2019.csv",
+      "description": "Event-level dataset manually extracted from the CCA report. Includes documented cetacean welfare or injury incidents used in the Arctic Voice dashboard.",
+      "variables": [
+        { "name": "event_id", "type": "string" },
+        { "name": "date", "type": "date" },
+        { "name": "year", "type": "integer" },
+        { "name": "venue_name", "type": "string" },
+        { "name": "species", "type": "string" },
+        { "name": "event_description", "type": "string" }
+      ],
+      "temporal_coverage": "2012–2019",
+      "spatial_coverage": "Mainland China",
+      "collection_date": "2012–2019 (original observation period)",
+      "processing_date": "2026-03",
+      "license": "Public NGO report; used for non-commercial educational visualization",
+      "ethical_considerations": "No personal human data included. Data aggregated at facility level. No individual animal identifiers beyond species.",
+      "accessibility": "CSV format, UTF-8 encoding, machine-readable and compatible with Streamlit dashboard."
     }
 
   ],
@@ -60,4 +86,5 @@
       "Export unified CSV"
     ]
   }
+
 }
