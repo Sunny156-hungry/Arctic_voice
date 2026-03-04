@@ -29,36 +29,12 @@ In alignment with SIGCHI's guidelines for inclusive design, this project is comm
 ## Embedded Multimedia
 
 ### Teaser Video
-**[Please embed your teaser video here. This can be done by uploading the video to the /assets/ folder and embedding it using an HTML5 video tag, or by uploading it to a platform like YouTube or Vimeo and embedding the link. The video should be ~3 minutes long, covering your scientific communication, a user walkthrough, and team acknowledgments.]**
+<video src="assets/teaser_video.mp4" controls width="100%">
+  Your browser does not support the video tag.
+</video>
 
-Example using an image linked to the video file:
-[![Watch the Teaser Video](assets/teaser_video_thumbnail.jpg)](assets/teaser_video.mp4)
 
 ### Project Poster
-**[Please embed a preview of your final project poster here. This could be a high-resolution image (e.g., poster_preview.png) stored in your /assets/ folder, linked to a PDF version or your Canva workspace.]**
+[View the Final Poster (PDF)](assets/Poster_Seeing%20Life%20Beneath%20the%20Surface.pdf) | [Canva Workspace](https://www.canva.cn/design/DAHAKAw2ajQ/fF1mobJSQf27rM8IRMSF5w/edit)
 
-[View the project poster on Canva](**[Insert your Canva workspace link here]**)
 
-## Project Value and Community Impact
-
-This project serves public cultural audiences, including museum visitors, students, and learners who typically encounter cetaceans as spectacles in aquariums or media. Our goal is to reposition whales and dolphins within their full ecological, legal, and cultural contexts, fostering active and reflective learning. The design directly supports educators and advocates like the China Cetacean Alliance (CCA) by translating their research into accessible public knowledge. Insights from our field trips were foundational: the Jiading Planning Exhibition Hall inspired our map-based global overview, the Waving Cube Sci-Fi Museum influenced our game-like interactive elements such as AR stories, and the Kunshan Museum of Chinese Opera Genres showed us the power of personal storytelling, leading to the creation of "Sophie’s Story."
-
-## Data Sources, Processing, and Governance
-
-Our project is built upon a foundation of transparency and reproducibility. The primary dataset is manually extracted from the **China Cetacean Alliance (CCA) Investigative Dataset (2019–2024)**. This data includes facility names, locations, species held, and welfare incident records. All raw and processed data, along with metadata schemas documenting variables and sources, are stored in the `/data/` directory. The data processing pipeline is fully documented and replicable, involving PDF extraction, cleaning with Python scripts, and version-controlled hosting on GitHub. Our data governance principles ensure privacy by using only facility-level aggregation and clearly marking narrative components like "Sophie’s Story" as distinct from verified data. Inclusivity is reflected in our bilingual labeling and the integration of diverse data perspectives.
-
-**[You can include your flowchart images here, e.g., Figure 2 and Figure 3 from your report, to visually explain your process.]**
-![Data Processing Workflow](assets/Figure_2_data_workflow.png)
-![Data Merging Flowchart](assets/Figure_3_merging_flowchart.png)
-
-## Visualization Tools, Design Flow, and Innovation
-
-The project is implemented as an interactive narrative website. The design flow guides the user from story to data to interaction and finally to reflection. It begins with "Sophie’s Story" to establish emotional context, then transitions into data-driven modules like global maps and timelines. AR-triggered stories and a potential life-stage game provide deeper, experiential learning. For instance, our Streamlit dashboard translates dataset attributes like `year` and `venue_name` into clear visual encodings such as bar charts and KPI cards, ensuring the visual meaning is directly traceable to the underlying data.
-
-Our work is inspired by the detailed but expert-focused reports of the China Cetacean Alliance and existing public narratives that often frame cetaceans primarily as welfare subjects. We innovate by creating a non-linear, interactive system that allows the public to connect individual whale stories with broader ecological systems. This approach is informed by recent research positioning cetaceans as ecosystem engineers crucial for ocean nutrient cycling and climate regulation. Our project thus acts as a critical translational medium, bridging complex marine ecology research, civic education, and ethical public engagement, making scientific insights accessible to a non-expert audience.
-
-**[Please insert your Design Flow diagram and Streamlit dashboard screenshot here, as referenced in your report (Figures 4 and 5).]**
-![Project Design Flow](assets/Figure_4_design_flow.png)
-![Streamlit Dashboard Interface](assets/Figure_5_dashboard.png)
-
-## Repository Structure
