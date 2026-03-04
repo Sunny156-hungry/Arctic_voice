@@ -29,10 +29,9 @@ In alignment with SIGCHI's guidelines for inclusive design, this project is comm
 ## Embedded Multimedia
 
 ### Teaser Video
-<video src="assets/teaser_video.mp4" controls width="100%">
-  Your browser does not support the video tag.
-</video>
 
+[![Teaser Video Thumbnail](assets/teaser_thumbnail.png)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID) 
+> Scientific Communication · User Walkthrough · Team & Acknowledgments
 
 ### Project Poster
 ![Poster: Seeing Life Beneath the Surface](assets/Poster_Seeing%20Life%20Beneath%20the%20Surface-2.png)
