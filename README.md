@@ -35,6 +35,8 @@ In alignment with SIGCHI's guidelines for inclusive design, this project is comm
 
 
 ### Project Poster
+![Poster: Seeing Life Beneath the Surface](assets/Poster_Seeing%20Life%20Beneath%20the%20Surface.pdf)
+
 [View the Final Poster (PDF)](assets/Poster_Seeing%20Life%20Beneath%20the%20Surface.pdf) | [Canva Workspace](https://www.canva.cn/design/DAHAKAw2ajQ/fF1mobJSQf27rM8IRMSF5w/edit)
 
 
