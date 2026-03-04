@@ -1,6 +1,7 @@
 # Seeing Life Beneath the Surface: A Data-Driven Narrative on Cetacean Protection and Public Responsibility
 
-**[Please insert your Teaser Figure here. This should be a high-res PNG (1600x900px) from your /assets/ folder that visually captures the essence of your project, such as a collage of your website, AR experience, and a whale.]**
+
+![Teaser Figure: Seeing Life Beneath the Surface](assets/teaser%20figure.png)
 
 ## Abstract
 
@@ -21,7 +22,7 @@ This project directly supports the following United Nations Sustainable Developm
 In alignment with SIGCHI's guidelines for inclusive design, this project is committed to accessibility. The final interactive website and all related materials are being developed with consideration for diverse users. The source code, data processing scripts, and project documentation are openly available in our GitHub repository. The datasets used, or links to the original public datasets, are accessible via our Hugging Face repository to promote transparency and reproducibility.
 - **GitHub Repository:** [Sunny156-hungry/Arctic_voice](https://github.com/Sunny156-hungry/Arctic_voice)
 - **Hugging Face Dataset:** [https://huggingface.co/datasets/tccc7777/Arctic_Voice_Infosci301](https://huggingface.co/datasets/tccc7777/Arctic_Voice_Infosci301)
-- **Interactive Demo:** **[Please insert the URL to your live interactive demo here once it is deployed.]**
+- **Interactive Demo:** Design Prototype (Vision-Oriented Interface): [https://whale-conservation.my.canva.site] Data Prototype (Live Data Implementation): [https://arctic-voice-gdptemplete.streamlit.app/]
 
 **Keywords:** Information visualization; geospatial storytelling; community-based learning; cetacean conservation; data ethics; interactive narrative; public engagement; situated learning.
 
